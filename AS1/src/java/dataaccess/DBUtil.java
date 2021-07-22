@@ -1,13 +1,11 @@
 package dataaccess;
 
-import java.sql.*;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 public class DBUtil
 {
     private static final
-    EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("Lab9PU");
+    EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("InventoryPU");
     
     public static EntityManagerFactory getEMFactory()
     {
