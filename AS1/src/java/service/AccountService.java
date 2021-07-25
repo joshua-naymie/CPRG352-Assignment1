@@ -98,4 +98,25 @@ public class AccountService
                user.getFirstName(), user.getLastName(),
                user.isActive(), user.isAdmin());
     }
+    
+    public RequestStatus checkLoginInfo(String username, String password) throws Exception
+    {
+        if(MiscUtil.hasEmptyValues(new String[] { username, password }))
+        {
+            return RequestStatus.EMPTY_INPUT;
+        }
+        
+        User user = get(username);
+        
+        if(user == null || !user.getPassword().equals(password))
+        {
+            return RequestStatus.INVALID_USERNAME_PASSWORD;
+        }
+        if(!user.isActive())
+        {
+            return RequestStatus.INACTIVE_USER;
+        }
+        
+        return RequestStatus.SUCCESS;
+    }
 }

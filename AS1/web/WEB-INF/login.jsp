@@ -15,7 +15,7 @@
         <h1>Home Inventory</h1>
         <h3>Login</h3>
         
-        <form action="POST">
+        <form method="POST">
             <label>Username:</label>
             <input type="text" name="username">
             <br>

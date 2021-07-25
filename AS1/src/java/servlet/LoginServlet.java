@@ -8,6 +8,8 @@ package servlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+import model.User;
+import service.AccountService;
 
 /**
  *
@@ -48,6 +50,55 @@ public class LoginServlet extends HttpServlet
         HttpSession session = request.getSession();
         
         String username = request.getParameter("username"),
-               password = request.getParameter("pasword");
+               password = request.getParameter("password");
+        
+        AccountService accountService = new AccountService();
+        
+        try
+        {
+            switch(accountService.checkLoginInfo(username, password))
+            {
+                case EMPTY_INPUT:
+                    break;
+                    
+                case INVALID_USERNAME_PASSWORD:
+                    break;
+                    
+                case INACTIVE_USER:
+                    break;
+                    
+                case SUCCESS:
+                    login(username, password, accountService, request, response);
+                    break;
+            }
+        }
+        catch(Exception exception)
+        {
+               System.out.println("ERROR 1"); 
+               exception.printStackTrace();
+        }
+        
+    }
+    
+    private void login(String username, String password, AccountService accountService,
+                       HttpServletRequest request, HttpServletResponse response)
+    {
+        try
+        {
+            User user = accountService.get(username);
+            
+            if(user.isAdmin())
+            {
+                getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+            }
+            else
+            {
+                getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp").forward(request, response);
+            }
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
     }
 }

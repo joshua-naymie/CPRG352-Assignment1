@@ -13,5 +13,6 @@ public enum RequestStatus
 {
     SUCCESS,
     EMPTY_INPUT,
-    INVALID_ROLE
+    INVALID_USERNAME_PASSWORD,
+    INACTIVE_USER
 }
