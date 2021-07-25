@@ -30,7 +30,8 @@ public class AccountService
     }
     
     public RequestStatus insert(String username, String password, String email,
-            String firstName, String lastName, boolean active, boolean isAdmin)
+                                String firstName, String lastName, boolean active,
+                                boolean isAdmin)
     throws Exception
     {
         if(MiscUtil.hasEmptyValues(new String[] { username, password, email, firstName, lastName }))
@@ -79,6 +80,11 @@ public class AccountService
             return RequestStatus.EMPTY_INPUT;
         }
         
+        if(get(username) == null)
+        {
+            return RequestStatus.NO_USER_FOUND;
+        }
+        
         UserDB userDB = new UserDB();
         userDB.update(username, password, email, firstName, lastName, active, isAdmin);
         
@@ -92,11 +98,11 @@ public class AccountService
      * @param user The User to update
      * @throws Exception Thrown when entry cannot be updated
      */
-    public void update(User user) throws Exception
+    public RequestStatus update(User user) throws Exception
     {
-        update(user.getUsername(), user.getPassword(), user.getEmail(),
-               user.getFirstName(), user.getLastName(),
-               user.isActive(), user.isAdmin());
+        return update(user.getUsername(), user.getPassword(), user.getEmail(),
+                      user.getFirstName(), user.getLastName(),
+                      user.isActive(), user.isAdmin());
     }
     
     public RequestStatus checkLoginInfo(String username, String password) throws Exception

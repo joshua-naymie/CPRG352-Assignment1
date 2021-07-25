@@ -14,5 +14,6 @@ public enum RequestStatus
     SUCCESS,
     EMPTY_INPUT,
     INVALID_USERNAME_PASSWORD,
-    INACTIVE_USER
+    INACTIVE_USER,
+    NO_USER_FOUND
 }

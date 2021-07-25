@@ -6,11 +6,9 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
+import model.User;
 import service.AccountService;
 
 /**
@@ -20,7 +18,11 @@ import service.AccountService;
 public class AdminServlet extends HttpServlet
 {
     private static final
-    String USERS_ATT = "users";
+    String USERS_ATT = "users",
+           USER_KEY_PARAM = "userkey",
+           ADMIN_JSP_DIR = "/WEB-INF/admin.jsp",
+           ADMIN_REDIR = "admin",
+           IS_EDIT = "isEdit";
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -40,13 +42,14 @@ public class AdminServlet extends HttpServlet
         try
         {
             request.setAttribute(USERS_ATT, accountService.getAll());
+            request.setAttribute(IS_EDIT, false);
         }
         catch(Exception exception)
         {
             exception.printStackTrace();
         }
         
-        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
     }
 
     /**
@@ -61,6 +64,118 @@ public class AdminServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        switch(request.getParameter("action"))
+        {
+            case "Add":
+                addUser(request, response);
+                break;
+                
+            case "Save":
+                updateUser(request, response);
+                break;
+                
+            case "Cancel":
+                response.sendRedirect(ADMIN_REDIR);
+                break;
+                
+            case "Edit":
+                editUser(request, response);
+                break;
+                
+            case "Delete":
+                deleteUser(request, response);
+                break;
+        }
+    }
+
+    private void addUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        AccountService accountService = new AccountService();
+        try
+        {
+            switch(accountService.insert(request.getParameter("username"),
+                                         request.getParameter("password"),
+                                         request.getParameter("email"),
+                                         request.getParameter("firstname"),
+                                         request.getParameter("lastname"),
+                                         true,
+                                         false))
+            {
+                case EMPTY_INPUT:
+                    break;
+                    
+                case SUCCESS:
+                    
+                    response.sendRedirect(ADMIN_REDIR);
+                    break;
+            }
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+    
+    private void editUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        AccountService accountService = new AccountService();
         
+        try
+        {
+            request.setAttribute(IS_EDIT, true);
+            request.setAttribute(USERS_ATT, accountService.getAll());
+            request.setAttribute("editUser", accountService.get(request.getParameter(USER_KEY_PARAM)));
+            
+            getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        AccountService accountService = new AccountService();
+        
+        try
+        {
+            accountService.delete(request.getParameter(USER_KEY_PARAM));
+            response.sendRedirect(ADMIN_REDIR);
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        AccountService accountService = new AccountService();
+        try
+        {
+            switch(accountService.update(request.getParameter("username"),
+                                         request.getParameter("password"),
+                                         request.getParameter("email"),
+                                         request.getParameter("firstname"),
+                                         request.getParameter("lastname"),
+                                         true,
+                                         false))
+            {
+                case EMPTY_INPUT:
+                    break;
+                    
+                case NO_USER_FOUND:
+                    break;
+                    
+                case SUCCESS:
+                    response.sendRedirect(ADMIN_REDIR);
+                    break;
+            }
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
     }
 }

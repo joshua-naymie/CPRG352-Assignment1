@@ -35,7 +35,7 @@
             <c:forEach items="${users}" var="user">
                 <tr>
                     <form method="POST">
-                        <input type="hidden" value="${user.getUsername()}">
+                        <input name="userkey" type="hidden" value="${user.getUsername()}">
                         <td name="username" value="${user.getUsername()}">${user.getUsername()}</td>
                         <td name="firstname" value="${user.getFirstName()}">${user.getFirstName()}</td>
                         <td name="lastname" value="${user.getLastName()}">${user.getLastName()}</td>
@@ -46,23 +46,40 @@
             </c:forEach>
         </table>
         
-        <h2>Add User</h2>
+        <c:if test="${isEdit == true}"><h2>Edit User</h2></c:if>
+        <c:if test="${isEdit == false}"><h2>Add User</h2></c:if>
+        
         <form method="POST">
             <label>Username:</label>
-            <input type="text" name="username">
+            <c:if test="${isEdit == true}">
+                <input type="hidden" name="username" value="${editUser.getUsername()}">
+                <label>${editUser.getUsername()}</label>
+            </c:if>
+            <c:if test="${isEdit == false}">
+                <input type="text" name="username" value="${editUser.getUsername()}">
+            </c:if>
+            
             <br>
             <label>Password:</label>
-            <input type="text" name="pasword">
+            <input type="text" name="password" value="${editUser.getPassword()}">
             <br>
             <label>Email:</label>
-            <input type="text" name="email">
+            <input type="text" name="email" value="${editUser.getEmail()}">
             <br>
             <label>First Name:</label>
-            <input type="text" name="firstname">
+            <input type="text" name="firstname" value="${editUser.getFirstName()}">
             <br>
             <label>Last Name:</label>
-            <input type="text" name="lastname">
+            <input type="text" name="lastname" value="${editUser.getLastName()}">
             <br>
+            <c:if test="${isEdit == true}">
+                <button type="submit" name="action" value="Save">Save</button>
+                <button type="submit" name="action" value="Cancel">Cancel</button>
+            </c:if>
+            <c:if test="${isEdit == false}">
+                <button type="submit" name="action" value="Add">Save</button>
+            </c:if>
+            
         </form>
     </body>
 </html>
