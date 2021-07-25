@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package model;
 
 /**
  *
  * @author Main
  */
-public class UserService
+public enum RequestStatus
 {
-    public void getAll()
-    {
-        
-    }
+    SUCCESS,
+    EMPTY_INPUT,
+    INVALID_ROLE
 }

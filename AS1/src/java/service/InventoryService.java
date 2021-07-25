@@ -5,7 +5,9 @@
  */
 package service;
 
-import domain.*;
+import model.Category;
+import model.Item;
+import model.User;
 import java.util.ArrayList;
 
 /**
