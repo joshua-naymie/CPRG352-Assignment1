@@ -68,4 +68,26 @@ public class ItemDB
     {
         insert(new Item(itemID, itemName, price));
     }
+    
+    public void delete(Item item)
+    {
+        EntityManager entityManager = DBUtil.getEMFactory().createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        
+        try
+        {
+            transaction.begin();
+            entityManager.remove(entityManager.merge(item));
+            transaction.commit();
+        }
+        catch(Exception exception)
+        {
+            transaction.rollback();
+            throw exception;
+        }
+        finally
+        {
+            entityManager.close();
+        }
+    }
 }

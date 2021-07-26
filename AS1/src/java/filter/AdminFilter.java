@@ -8,12 +8,13 @@ package filter;
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import service.AccountService;
 
 /**
  *
  * @author Main
  */
-public class AuthenticationFilter implements Filter
+public class AdminFilter implements Filter
 {
 
     @Override
@@ -23,16 +24,25 @@ public class AuthenticationFilter implements Filter
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
     {
         HttpSession session = ((HttpServletRequest)request).getSession();
+        AccountService accountService = new AccountService();
         
-        if(session.getAttribute("username") == null)
+        try
         {
-            ((HttpServletResponse)response).sendRedirect("login");
-            return;
+            if(!accountService.get((String)session.getAttribute("username")).isAdmin())
+            {
+                ((HttpServletResponse)response).sendRedirect("inventory");
+                return;
+            }
+
+            chain.doFilter(request, response);
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
         }
         
-        chain.doFilter(request, response);
     }
- 
+
     @Override
     public void destroy() {;}
     

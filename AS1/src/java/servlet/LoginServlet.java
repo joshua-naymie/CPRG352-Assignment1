@@ -76,7 +76,6 @@ public class LoginServlet extends HttpServlet
         }
         catch(Exception exception)
         {
-               System.out.println("ERROR 1"); 
                exception.printStackTrace();
         }
         
@@ -97,6 +96,7 @@ public class LoginServlet extends HttpServlet
             }
             else
             {
+                System.out.println("here");
                 response.sendRedirect("inventory");
             }
         }

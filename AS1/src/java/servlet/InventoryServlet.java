@@ -8,6 +8,9 @@ package servlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+import model.Item;
+import model.User;
+import service.AccountService;
 import service.InventoryService;
 
 /**
@@ -33,10 +36,18 @@ public class InventoryServlet extends HttpServlet
     throws ServletException, IOException
     {
         HttpSession session = request.getSession(false);
-            
+        
+        AccountService accountService = new AccountService();
         InventoryService inventoryService = new InventoryService();
         try
         {
+            User user = accountService.get((String) session.getAttribute("username"));
+            
+            for(Item i : user.getItemList())
+            {
+                System.out.println(i.getItemName());
+            }
+            request.setAttribute("user", accountService.get((String) session.getAttribute("username")));
             request.setAttribute("categories", inventoryService.getAllCategories());
         }
         catch(Exception exception)
@@ -64,11 +75,58 @@ public class InventoryServlet extends HttpServlet
             case "Add":
                 addItem(request, response);
                 break;
+                
+            case "Delete":
+                removeItem(request, response);
+                break;
         }
     }
 
     private void addItem(HttpServletRequest request, HttpServletResponse response)
     {
         InventoryService inventoryService = new InventoryService();
+        
+        try
+        {
+            switch(inventoryService.insertItem(request.getParameter("itemname"),
+                                               Double.parseDouble(request.getParameter("itemprice")), 
+                                               Integer.parseInt(request.getParameter("category")), 
+                                               (String)request.getSession(false).getAttribute("username")))
+            {
+                case SUCCESS:
+                    response.sendRedirect("inventory");
+                    break;
+                
+                case INVALID_PERMISSION:
+                    break;
+            }
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        
+    }
+
+    private void removeItem(HttpServletRequest request, HttpServletResponse response)
+    {
+        InventoryService inventoryService = new InventoryService();
+        
+        try
+        {
+            switch(inventoryService.deleteItem(Integer.parseInt(request.getParameter("itemkey")),
+                                               (String)request.getSession().getAttribute("username")))
+            {
+                case SUCCESS:
+                    response.sendRedirect("inventory");
+                    break;
+            }
+            
+            
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+        }
     }
 }

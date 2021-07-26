@@ -15,12 +15,25 @@ import model.Category;
  */
 public class CategoryDB
 {
-     public List<Category> getAll() throws Exception
+    public List<Category> getAll() throws Exception
     {
         EntityManager entityManager = DBUtil.getEMFactory().createEntityManager();
         try
         {
             return entityManager.createNamedQuery("Category.findAll").getResultList();
+        }
+        finally
+        {
+            entityManager.close();
+        }
+    }
+    
+    public Category get(int categoryID) throws Exception
+    {
+        EntityManager entityManager = DBUtil.getEMFactory().createEntityManager();
+        try
+        {
+            return entityManager.find(Category.class, categoryID);
         }
         finally
         {
