@@ -48,6 +48,7 @@ public class InventoryServlet extends HttpServlet
                 System.out.println(i.getItemName());
             }
             request.setAttribute("user", accountService.get((String) session.getAttribute("username")));
+            request.setAttribute("itemlist", user.getItemList());
             request.setAttribute("categories", inventoryService.getAllCategories());
         }
         catch(Exception exception)

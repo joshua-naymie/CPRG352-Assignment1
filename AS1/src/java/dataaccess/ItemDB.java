@@ -49,9 +49,9 @@ public class ItemDB
         
         try
         {
-            transaction.begin();
+            entityManager.getTransaction().begin();
             entityManager.persist(item);
-            transaction.commit();
+            entityManager.getTransaction().commit();
         }
         catch(Exception exception)
         {

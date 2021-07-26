@@ -30,7 +30,7 @@
                 <th>Price</th>
                 <th>Delete</th>
             </tr>
-            <c:forEach items="${user.getItemList()}" var="item">
+            <c:forEach items="${itemlist}" var="item">
                 <tr>
                     <form method="POST">
                         <input name="itemkey" type="hidden" value="${item.getItemID()}">
