@@ -5,10 +5,9 @@
  */
 package service;
 
-import model.Category;
-import model.Item;
-import model.User;
-import java.util.ArrayList;
+import dataaccess.*;
+import model.*;
+import java.util.List;
 
 /**
  *
@@ -16,25 +15,10 @@ import java.util.ArrayList;
  */
 public class InventoryService
 {
-    public Item[] getAllItems()
+    public List<Item> getAllItems() throws Exception
     {
-        return null;
-    }
-    
-    public Item[] getAllItemsByOwner(User owner)
-    {
-        Item[] allItems = getAllItems();
-        ArrayList<Item> items = new ArrayList<Item>();
-        
-        for(Item item : allItems)
-        {
-            if(item.getOwner().equals(owner))
-            {
-                items.add(item);
-            }
-        }
-        
-        return (Item[]) items.toArray();
+        ItemDB itemDB = new ItemDB();
+        return itemDB.getAll();
     }
     
     public Item getItem(int itemID)
@@ -42,9 +26,10 @@ public class InventoryService
         return null;
     }
     
-    public Category[] getAllCategories()
+    public List<Category> getAllCategories() throws Exception
     {
-        return null;
+        CategoryDB categoryDB = new CategoryDB();
+        return categoryDB.getAll();
     }
     
     public Category getCategory(int categoryID)

@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+        session.invalidate();
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
@@ -48,6 +49,7 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+        session.invalidate();
         
         String username = request.getParameter("username"),
                password = request.getParameter("password");
@@ -85,15 +87,17 @@ public class LoginServlet extends HttpServlet
     {
         try
         {
-            User user = accountService.get(username);
+            HttpSession session = request.getSession();
+            session.setAttribute("username", username);
             
-            if(user.isAdmin())
+            
+            if(accountService.get(username).isAdmin())
             {
-                getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+                response.sendRedirect("admin");
             }
             else
             {
-                getServletContext().getRequestDispatcher("/WEB-INF/inventory.jsp").forward(request, response);
+                response.sendRedirect("inventory");
             }
         }
         catch(Exception exception)

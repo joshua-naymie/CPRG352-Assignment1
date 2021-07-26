@@ -81,12 +81,12 @@ public class Item implements Serializable
         this.itemName = itemName;
     }
 
-    public double getPrice()
+    public double getItemPrice()
     {
         return price;
     }
 
-    public void setPrice(double price)
+    public void setItemPrice(double price)
     {
         this.price = price;
     }
