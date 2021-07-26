@@ -21,7 +21,7 @@
             <li><a href="login?logout">Logout</a></li>
         </ul>
         
-        <h2>Inventory for ${user.getFirstName()} ${user.getLastName}</h2>
+        <h2>Inventory for ${user.getFirstName()} ${user.getLastName()}</h2>
         
         <table>
             <tr>
@@ -33,10 +33,10 @@
             <c:forEach items="${user.getItemList()}" var="item">
                 <tr>
                     <form method="POST">
-                        <input name="itemkey" type="hidden" value="${item.getItemId()}">
-                        <td name="itemcategory" value="${item.getCategory()}">${item.getCategory()}</td>
-                        <td name="itemname" value="${item.getName()}">${item.getName()}</td>
-                        <td name="itemprice" value="${item.getPrice()}">${item.getPrice()}</td>
+                        <input name="itemkey" type="hidden" value="${item.getItemID()}">
+                        <td name="itemcategory" value="${item.getCategory().getCategoryName()}">${item.getCategory().getCategoryName()}</td>
+                        <td name="itemname" value="${item.getItemName()}">${item.getItemName()}</td>
+                        <td name="itemprice" value="${item.getItemPrice()}">${item.getItemPrice()}</td>
                         <td><input type="submit" name="action" value="Delete"></td>
                     </form>
                 </tr>
@@ -53,11 +53,11 @@
                 </c:forEach>
             </select>
             <br>
-            <label>First Name:</label>
-            <input type="text" name="firstname" value="${editUser.getFirstName()}">
+            <label>Name:</label>
+            <input type="text" name="itemname">
             <br>
-            <label>Last Name:</label>
-            <input type="text" name="lastname" value="${editUser.getLastName()}">
+            <label>Price:</label>
+            <input type="number" name="itemprice">
             <br>
             <button type="submit" name="action" value="Add">Save</button>
         </form>

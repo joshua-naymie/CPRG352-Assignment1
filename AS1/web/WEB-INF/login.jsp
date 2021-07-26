@@ -22,7 +22,7 @@
             <label>Password:</label>
             <input type="text" name="password">
             <br>
-            <input type="submit">
+            <input type="submit" value="Login">
         </form>
     </body>
 </html>
