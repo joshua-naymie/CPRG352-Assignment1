@@ -102,10 +102,13 @@ public class AdminServlet extends HttpServlet
                                          false))
             {
                 case EMPTY_INPUT:
+                    request.setAttribute("message", "Please fill all fields to add a user");
+                    request.setAttribute(USERS_ATT, accountService.getAll());
+                    request.setAttribute(IS_EDIT, false);
+                    getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
                     break;
                     
                 case SUCCESS:
-                    
                     response.sendRedirect(ADMIN_REDIR);
                     break;
             }
@@ -140,8 +143,22 @@ public class AdminServlet extends HttpServlet
         
         try
         {
-            accountService.delete(request.getParameter(USER_KEY_PARAM));
-            response.sendRedirect(ADMIN_REDIR);
+            switch(accountService.delete(request.getParameter(USER_KEY_PARAM), (String)request.getSession().getAttribute("username")))
+            {
+                case SUCCESS:
+                    request.setAttribute("message", "User deleted succesfully");
+                    request.setAttribute(USERS_ATT, accountService.getAll());
+                    request.setAttribute(IS_EDIT, false);
+                    getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
+                    break;
+                    
+                case CANNOT_DELETE_SELF:
+                    request.setAttribute("message", "Cannot delete current user");
+                    request.setAttribute(USERS_ATT, accountService.getAll());
+                    request.setAttribute(IS_EDIT, false);
+                    getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
+                    break;
+            }
         }
         catch(Exception exception)
         {
@@ -163,9 +180,15 @@ public class AdminServlet extends HttpServlet
                                          false))
             {
                 case EMPTY_INPUT:
+                    request.setAttribute("message", "Please fill all fields to edit a user");
+                    request.setAttribute(IS_EDIT, false);
+                    getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
                     break;
                     
                 case NO_USER_FOUND:
+                    request.setAttribute("message", "User was not found in database");
+                    request.setAttribute(IS_EDIT, false);
+                    getServletContext().getRequestDispatcher(ADMIN_JSP_DIR).forward(request, response);
                     break;
                     
                 case SUCCESS:

@@ -110,6 +110,7 @@ public class InventoryServlet extends HttpServlet
 
     private void removeItem(HttpServletRequest request, HttpServletResponse response)
     {
+        AccountService accountService = new AccountService();
         InventoryService inventoryService = new InventoryService();
         
         try
@@ -119,6 +120,14 @@ public class InventoryServlet extends HttpServlet
             {
                 case SUCCESS:
                     response.sendRedirect("inventory");
+                    break;
+                    
+                case INVALID_PERMISSION:
+                    request.setAttribute("user", accountService.get((String)request.getSession().getAttribute("username")));
+                    request.setAttribute("categories", inventoryService.getAllCategories());
+                    request.setAttribute("message", "You do not have permession do delete this item");
+                    
+                    getServletContext().getRequestDispatcher(INVENTORY_JSP_DIR).forward(request, response);
                     break;
             }
             

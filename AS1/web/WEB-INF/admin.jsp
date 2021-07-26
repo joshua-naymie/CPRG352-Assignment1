@@ -79,6 +79,9 @@
             <c:if test="${isEdit == false}">
                 <button type="submit" name="action" value="Add">Save</button>
             </c:if>
+            <c:if test="${message != null}">
+                <h2>${message}</h2>
+            </c:if>
             
         </form>
     </body>

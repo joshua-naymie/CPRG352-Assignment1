@@ -53,9 +53,9 @@ public class AccountService
                user.isActive(), user.isAdmin());
     }
     
-     public void delete(String username) throws Exception
+     public RequestStatus delete(String username, String currentUsername) throws Exception
     {
-        delete(get(username));
+        return delete(get(username), currentUsername);
     }
     
     //---------------
@@ -65,10 +65,17 @@ public class AccountService
      * @param user The User to delete
      * @throws Exception Thrown when entry cannot be deleted
      */
-    public void delete(User user) throws Exception
+    public RequestStatus delete(User user, String username) throws Exception
     {
+        if(user.getUsername().equals(username))
+        {
+            return RequestStatus.CANNOT_DELETE_SELF;
+        }
+        
         UserDB userDB = new UserDB();
         userDB.delete(user);
+        
+        return RequestStatus.SUCCESS;
     }
     
     public RequestStatus update(String username, String password, String email,

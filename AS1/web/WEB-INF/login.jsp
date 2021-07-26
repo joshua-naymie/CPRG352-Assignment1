@@ -4,6 +4,7 @@
     Author     : Main
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,6 +24,7 @@
             <input type="text" name="password">
             <br>
             <input type="submit" value="Login">
+            <c:if test="${message != null}"><h2>${message}</h2></c:if>
         </form>
     </body>
 </html>

@@ -41,7 +41,7 @@ public class Item implements Serializable
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Category category;
     @JoinColumn(name = "Owner", referencedColumnName = "Username")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User owner;
 
     public Item()

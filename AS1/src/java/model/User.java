@@ -52,7 +52,7 @@ public class User implements Serializable
     @Basic(optional = false)
     @Column(name = "IsAdmin")
     private boolean isAdmin;
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Item> itemList;
 
     public User()

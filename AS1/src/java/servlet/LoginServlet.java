@@ -33,6 +33,10 @@ public class LoginServlet extends HttpServlet
     {
         HttpSession session = request.getSession();
         session.invalidate();
+        if(request.getParameter("logout") != null)
+        {
+            request.setAttribute("message", "Logout succesful!");
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
@@ -61,12 +65,18 @@ public class LoginServlet extends HttpServlet
             switch(accountService.checkLoginInfo(username, password))
             {
                 case EMPTY_INPUT:
+                    request.setAttribute("message", "Please enter your username and password");
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     break;
                     
                 case INVALID_USERNAME_PASSWORD:
+                    request.setAttribute("message", "Invalid username/password");
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     break;
                     
                 case INACTIVE_USER:
+                    request.setAttribute("message", "This user is inactive");
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     break;
                     
                 case SUCCESS:
