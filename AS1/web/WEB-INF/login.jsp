@@ -10,21 +10,34 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="styles/styles.css" />
         <title>Login</title>
     </head>
     <body>
-        <h1>Home Inventory</h1>
-        <h3>Login</h3>
+        <h1 class="header">Home Inventory</h1>
+        <div class="loginsection">
+            <div class="login">
+                <h2 style="text-align: center;">Login</h2>
+                <form method="POST">
+                    <div class="input">
+                        <div style="text-align: right;">
+                            <label for="username">Username:</label>
+                            <label for="password">Password:</label>
+                        </div>
+                        <div>
+                            <input id="username" type="text" name="username">
+                            <input id="password" type="password" name="password">
+                        </div>
+                    </div>
+
+                    <div class="loginbutton">
+                        <input type="submit" value="Login">
+                    </div>
+                    
+                    <c:if test="${message != null}"><p>${message}</p></c:if>
+                </form>
+            </div>
+        </div>
         
-        <form method="POST">
-            <label>Username:</label>
-            <input type="text" name="username">
-            <br>
-            <label>Password:</label>
-            <input type="text" name="password">
-            <br>
-            <input type="submit" value="Login">
-            <c:if test="${message != null}"><h2>${message}</h2></c:if>
-        </form>
     </body>
 </html>

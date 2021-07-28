@@ -49,8 +49,10 @@ public class ItemDB
         
         try
         {
+            item.getOwner().getItemList().add(item);
             entityManager.getTransaction().begin();
             entityManager.persist(item);
+            entityManager.merge(item.getOwner());
             entityManager.getTransaction().commit();
         }
         catch(Exception exception)
@@ -76,8 +78,10 @@ public class ItemDB
         
         try
         {
+            item.getOwner().getItemList().remove(item);
             transaction.begin();
             entityManager.remove(entityManager.merge(item));
+            entityManager.merge(item.getOwner());
             transaction.commit();
         }
         catch(Exception exception)

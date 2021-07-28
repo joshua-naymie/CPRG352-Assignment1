@@ -40,6 +40,26 @@ public class InventoryService
         return itemDB.get(itemID);
     }
     
+    public RequestStatus insertItem(String itemName, String itemPrice,
+                                    String categoryID, String username)
+    throws Exception
+    {
+        if(MiscUtil.hasEmptyValues(new String[] { itemName, itemPrice, categoryID }))
+        {
+            return RequestStatus.EMPTY_INPUT;
+        }
+        if(!MiscUtil.stringIsNumber(itemPrice))
+        {
+            return RequestStatus.INVALID_PRICE;
+        }
+        if(!MiscUtil.stringIsNumber(categoryID))
+        {
+            return RequestStatus.INVALID_CATEGORYID;
+        }
+        
+        return insertItem(itemName, Double.parseDouble(itemPrice), Integer.parseInt(categoryID), username);
+    }
+    
     public RequestStatus insertItem(String itemName, double itemPrice,
                                     int categoryID, String username)
     throws Exception

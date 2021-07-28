@@ -43,7 +43,7 @@
             </c:forEach>
         </table>
         
-        <h2>Add User</h2>
+        <h2>Add Item</h2>
         
         <form method="POST">
             <label>Category:</label>

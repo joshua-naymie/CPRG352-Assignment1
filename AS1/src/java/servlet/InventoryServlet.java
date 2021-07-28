@@ -90,15 +90,36 @@ public class InventoryServlet extends HttpServlet
         try
         {
             switch(inventoryService.insertItem(request.getParameter("itemname"),
-                                               Double.parseDouble(request.getParameter("itemprice")), 
-                                               Integer.parseInt(request.getParameter("category")), 
+                                               request.getParameter("itemprice"), 
+                                               request.getParameter("category"), 
                                                (String)request.getSession(false).getAttribute("username")))
             {
                 case SUCCESS:
                     response.sendRedirect("inventory");
                     break;
                 
+                case EMPTY_INPUT:
+                    request.setAttribute("categories", inventoryService.getAllCategories());
+                    request.setAttribute("message", "Please enter all fields");
+                    
+                    getServletContext().getRequestDispatcher(INVENTORY_JSP_DIR).forward(request, response);
+                    break;
+                    
                 case INVALID_PERMISSION:
+                    break;
+                    
+                case INVALID_PRICE:
+                    request.setAttribute("categories", inventoryService.getAllCategories());
+                    request.setAttribute("message", "invalid price");
+                    
+                    getServletContext().getRequestDispatcher(INVENTORY_JSP_DIR).forward(request, response);
+                    break;
+                    
+                case INVALID_CATEGORYID:
+                    request.setAttribute("categories", inventoryService.getAllCategories());
+                    request.setAttribute("message", "invalid price");
+                    
+                    getServletContext().getRequestDispatcher(INVENTORY_JSP_DIR).forward(request, response);
                     break;
             }
         }
@@ -123,8 +144,15 @@ public class InventoryServlet extends HttpServlet
                     response.sendRedirect("inventory");
                     break;
                     
+                case EMPTY_INPUT:
+                    request.setAttribute("categories", inventoryService.getAllCategories());
+                    request.setAttribute("message", "Please fill all fields to save a new item");
+                    
+                    getServletContext().getRequestDispatcher(INVENTORY_JSP_DIR).forward(request, response);
+                    break;
+                    
                 case INVALID_PERMISSION:
-                    request.setAttribute("user", accountService.get((String)request.getSession().getAttribute("username")));
+                    
                     request.setAttribute("categories", inventoryService.getAllCategories());
                     request.setAttribute("message", "You do not have permession do delete this item");
                     
